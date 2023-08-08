@@ -1,5 +1,5 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, PipeTransform, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, PipeTransform, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { AuthService } from './auth.service';
@@ -9,6 +9,7 @@ import { Observable, Subject, debounceTime, map, startWith } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { NgbdSortableHeader, SortEvent } from './sortable.directive';
 import { CountryService } from './country.service';
+import { ToastService } from './toast-service';
 
 /**
  * Food data with nested structure.
@@ -173,7 +174,7 @@ function search(text: string, pipe: PipeTransform): Country[] {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = 'tree-app2';
   userName: string;
   password: string;
@@ -243,7 +244,8 @@ export class AppComponent {
     config: NgbOffcanvasConfig,
     private offcanvasService: NgbOffcanvas,
     private pipe : DecimalPipe,
-    public service : CountryService
+    public service : CountryService,
+    public toastService: ToastService
   ) {
     this.dataSource.data = TREE_DATA;
     // customize default values of offcanvas used by this component tree
@@ -347,5 +349,22 @@ export class AppComponent {
 
   toggleMeridian() {
 		this.meridian = !this.meridian;
+	}
+
+
+  showStandard() {
+		this.toastService.show('I am a standard toast');
+	}
+
+	showSuccess() {
+		this.toastService.show('I am a success toast', { classname: 'bg-success text-light', delay: 10000 });
+	}
+
+	showDanger(dangerTpl : any) {
+		this.toastService.show(dangerTpl, { classname: 'bg-danger text-light', delay: 15000 });
+	}
+
+	ngOnDestroy(): void {
+		this.toastService.clear();
 	}
 }
