@@ -4,8 +4,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
-import { ModalDismissReasons, NgbActiveModal, NgbAlert, NgbCalendar, NgbDateStruct, NgbModal, NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, debounceTime, map, startWith } from 'rxjs';
+import { ModalDismissReasons, NgbActiveModal, NgbAlert, NgbCalendar, NgbDateStruct, NgbModal, NgbOffcanvas, NgbOffcanvasConfig, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, OperatorFunction, Subject, debounceTime, distinctUntilChanged, filter, map, merge, startWith } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { NgbdSortableHeader, SortEvent } from './sortable.directive';
 import { CountryService } from './country.service';
@@ -158,6 +158,68 @@ const COUNTRIES: Country[] = [
 	},
 ];
 
+const states = [
+	'Alabama',
+	'Alaska',
+	'American Samoa',
+	'Arizona',
+	'Arkansas',
+	'California',
+	'Colorado',
+	'Connecticut',
+	'Delaware',
+	'District Of Columbia',
+	'Federated States Of Micronesia',
+	'Florida',
+	'Georgia',
+	'Guam',
+	'Hawaii',
+	'Idaho',
+	'Illinois',
+	'Indiana',
+	'Iowa',
+	'Kansas',
+	'Kentucky',
+	'Louisiana',
+	'Maine',
+	'Marshall Islands',
+	'Maryland',
+	'Massachusetts',
+	'Michigan',
+	'Minnesota',
+	'Mississippi',
+	'Missouri',
+	'Montana',
+	'Nebraska',
+	'Nevada',
+	'New Hampshire',
+	'New Jersey',
+	'New Mexico',
+	'New York',
+	'North Carolina',
+	'North Dakota',
+	'Northern Mariana Islands',
+	'Ohio',
+	'Oklahoma',
+	'Oregon',
+	'Palau',
+	'Pennsylvania',
+	'Puerto Rico',
+	'Rhode Island',
+	'South Carolina',
+	'South Dakota',
+	'Tennessee',
+	'Texas',
+	'Utah',
+	'Vermont',
+	'Virgin Islands',
+	'Virginia',
+	'Washington',
+	'West Virginia',
+	'Wisconsin',
+	'Wyoming',
+];
+
 function search(text: string, pipe: PipeTransform): Country[] {
 	return COUNTRIES.filter((country) => {
 		const term = text.toLowerCase();
@@ -180,7 +242,7 @@ export class AppComponent implements OnDestroy {
   password: string;
   formData: FormGroup;
   isLoggedIn: boolean = false;
-  model: NgbDateStruct;
+  dateModel: NgbDateStruct;
   date: { year: number; month: number };
   closeResult: string = '';
   currentPage = 3;
@@ -198,6 +260,10 @@ export class AppComponent implements OnDestroy {
 	total$: Observable<number>;
   @ViewChild('selfClosingAlert', { static: false }) selfClosingAlert: NgbAlert;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  stateModel: any;
+  @ViewChild('instance', { static: true }) instance: NgbTypeahead;
+	focus$ = new Subject<string>();
+	click$ = new Subject<string>();
 
   /*#region tree functionality  */
   /**
@@ -262,7 +328,7 @@ export class AppComponent implements OnDestroy {
       userName: new FormControl("admin"),
       password: new FormControl("admin"),
     });
-    console.log(this.model);
+    console.log(this.dateModel);
 
 
     this._success.subscribe((message) => (this.successMessage = message));
@@ -295,7 +361,7 @@ export class AppComponent implements OnDestroy {
   }
 
   selectToday() {
-    this.model = this.calendar.getToday();
+    this.dateModel = this.calendar.getToday();
   }
 
   openModal(name: string) {
@@ -367,4 +433,16 @@ export class AppComponent implements OnDestroy {
 	ngOnDestroy(): void {
 		this.toastService.clear();
 	}
+
+  searchState: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
+		const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+		const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+		const inputFocus$ = this.focus$;
+
+		return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+			map((term) =>
+				(term === '' ? states : states.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10),
+			),
+		);
+	};
 }

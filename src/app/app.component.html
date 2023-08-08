@@ -65,7 +65,7 @@
       </div>
     </form>
   <div class="form-content">
-    <input type="text" [(ngModel)]="model"
+    <input type="text" [(ngModel)]="dateModel"
       [ngModelOptions]="{standalone: true}" ngbDatepicker #dp="ngbDatepicker" (navigate)="date = $event.next"/>
     <button (click)="dp.toggle()">Toggle</button>
   </div>
@@ -81,7 +81,7 @@
   <h1 *ngIf="isLoggedIn">Logged In</h1>
   <h1 *ngIf="!isLoggedIn">Logged Out</h1>
   <!-- <pre>Month:{{ date.month }}.{{ date.year }}</pre> -->
-  <pre>Model: {{ model | json }}</pre>
+  <pre>Model: {{ dateModel | json }}</pre>
 </div>
       </ng-template>
     </li>
@@ -258,6 +258,24 @@
         </div>
         
         <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="12">
+      <a ngbNavLink>TypeAhead</a>
+      <ng-template ngbNavContent>
+        <label for="typeahead-focus">Search for a state:</label>
+        <input
+          id="typeahead-focus"
+          type="text"
+          class="form-control"
+          [(ngModel)]="stateModel"
+          [ngbTypeahead]="searchState"
+          (focus)="focus$.next($any($event).target.value)"
+          (click)="click$.next($any($event).target.value)"
+          #instance="ngbTypeahead"
+        />
+        <hr />
+        <pre>Model: {{ stateModel | json }}</pre>
       </ng-template>
     </li>
   </ul>
