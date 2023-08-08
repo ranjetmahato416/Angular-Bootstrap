@@ -188,6 +188,9 @@ export class AppComponent {
   currentRate = 5;
   selected = 0;
 	hovered = 0;
+  time = { hour: 13, minute: 30 };
+	spinners : boolean = true;
+  meridian : boolean = true;
 	filter = new FormControl('', { nonNullable: true });
   private _success = new Subject<string>();
   countries$: Observable<Country[]>;
@@ -335,5 +338,14 @@ export class AppComponent {
 
 		this.service.sortColumn = column;
 		this.service.sortDirection = direction;
+	}
+
+
+  toggleSpinners() {
+		this.spinners = !this.spinners;
+	}
+
+  toggleMeridian() {
+		this.meridian = !this.meridian;
 	}
 }
