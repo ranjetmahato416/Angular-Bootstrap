@@ -1,7 +1,7 @@
 <div class="tree-component">
   <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeNav">
     <li [ngbNavItem]="1">
-      <a ngbNavLink>Home</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Tree Hierarchy">Home</a>
       <ng-template ngbNavContent>
         <ngb-accordion #acc="ngbAccordion">
           <ngb-panel title="Tree Hierarchy">
@@ -35,7 +35,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
-      <a ngbNavLink>Alert Service</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Alerts">Alert Service</a>
       <ng-template ngbNavContent>
         <ngb-alert class="fixed-top" #selfClosingAlert *ngIf="successMessage" type="success" (closed)="successMessage = ''"
         >{{ successMessage }}
@@ -44,7 +44,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="3">
-      <a ngbNavLink>Ngb-DatePicker</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Date Picker">Ngb-DatePicker</a>
       <ng-template ngbNavContent>
         <div>
     <form [formGroup]="formData" (ngSubmit)="onClickSubmit(formData.value)" action
@@ -86,7 +86,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="4">
-      <a ngbNavLink>Confirm Modal</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Confirmation Dailog Box">Confirm Modal</a>
       <ng-template ngbNavContent>
         <p>
           First focusable element within the modal window will receive focus upon opening. This could be configured to focus any
@@ -113,7 +113,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="5">
-      <a ngbNavLink>OffCanvas</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Off Canvas">OffCanvas</a>
       <ng-template ngbNavContent>
         <ng-template #content let-offcanvas >
           <div class="offcanvas-header">
@@ -133,7 +133,7 @@
       
     </li>
     <li [ngbNavItem]="6">
-      <a ngbNavLink>PopOver</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Pop Over">PopOver</a>
       <ng-template ngbNavContent>
         <ng-template #popContent>Hello, <b>Humans!</b>!</ng-template>
         <ng-template #popTitle>Fancy <b>content!!</b></ng-template>
@@ -143,7 +143,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="7">
-      <a ngbNavLink>Progress Bar</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Progress Bar">Progress Bar</a>
       <ng-template ngbNavContent="">
         <p><ngb-progressbar type="success" [value]="25">default</ngb-progressbar></p>
         <p><ngb-progressbar type="info" [value]="50" height="10px">10px</ngb-progressbar></p>
@@ -152,7 +152,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="8">
-      <a ngbNavLink>Rating</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Ratings">Rating</a>
       <ng-template ngbNavContent>
         <p>We use <code>bootstrap-icons</code> to display stars</p>
         <ngb-rating [(rate)]="selected" (hover)="hovered=$event" (leave)="hovered=0"></ngb-rating>
@@ -165,7 +165,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="9">
-      <a ngbNavLink>Table</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Complete Table">Table</a>
       <ng-template ngbNavContent>
         <form>
           <div class="mb-3 row">
@@ -222,7 +222,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="10">
-      <a ngbNavLink>Time Picker</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Time Picker">Time Picker</a>
       <ng-template ngbNavContent="">
         <ngb-timepicker [(ngModel)]="time" [spinners]="spinners" [meridian]="meridian"></ngb-timepicker>
       <hr />
@@ -235,7 +235,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="11">
-      <a ngbNavLink>Toast</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Toaster">Toast</a>
       <ng-template ngbNavContent>
         <ng-template #dangerTpl>
           <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
@@ -261,7 +261,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="12">
-      <a ngbNavLink>TypeAhead</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="TypeAhead">TypeAhead</a>
       <ng-template ngbNavContent>
         <label for="typeahead-focus">Search for a state:</label>
         <input
@@ -269,7 +269,7 @@
           type="text"
           class="form-control"
           [(ngModel)]="stateModel"
-          [ngbTypeahead]="searchState"
+          [ngbTypeahead]="search"
           (focus)="focus$.next($any($event).target.value)"
           (click)="click$.next($any($event).target.value)"
           #instance="ngbTypeahead"
@@ -279,7 +279,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="13">
-      <a ngbNavLink>ToolTip</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Tooltips">ToolTip</a>
       <ng-template ngbNavContent>
         <button type="button" class="btn btn-outline-secondary me-2" placement="top" ngbTooltip="Tooltip on top">
           Tooltip on top

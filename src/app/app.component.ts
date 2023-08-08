@@ -220,7 +220,7 @@ const states = [
 	'Wyoming',
 ];
 
-function search(text: string, pipe: PipeTransform): Country[] {
+function searchCountry(text: string, pipe: PipeTransform): Country[] {
 	return COUNTRIES.filter((country) => {
 		const term = text.toLowerCase();
 		return (
@@ -434,7 +434,7 @@ export class AppComponent implements OnDestroy {
 		this.toastService.clear();
 	}
 
-  searchState: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
+  search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
 		const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
 		const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
 		const inputFocus$ = this.focus$;
