@@ -1,0 +1,236 @@
+<div class="tree-component">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeNav">
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Home</a>
+      <ng-template ngbNavContent>
+        <ngb-accordion #acc="ngbAccordion">
+          <ngb-panel title="Tree Hierarchy">
+            <ng-template ngbPanelContent>
+              <div class="tree-container">
+                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                  <!-- This is the tree node template for leaf nodes -->
+                  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                    <!-- use a disabled button to provide padding for tree leaf -->
+                    <button mat-icon-button disabled></button>
+                    {{node.name}}
+                  </mat-tree-node>
+                  <!-- This is the tree node template for expandable nodes -->
+                  <mat-tree-node *matTreeNodeDef="let node;when: hasChild"
+                    matTreeNodePadding>
+                    <button mat-icon-button matTreeNodeToggle
+                      [attr.aria-label]="'Toggle ' + node.name">
+                      <mat-icon class="mat-icon-rtl-mirror">
+                        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                      </mat-icon>
+                    </button>
+                    <mat-icon class="tree-mat-icon">group</mat-icon>
+                    <!-- <mat-icon class="tree-mat-icon">list</mat-icon> -->
+                    {{node.name}}
+                  </mat-tree-node>
+                </mat-tree>
+              </div>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Alert Service</a>
+      <ng-template ngbNavContent>
+        <ngb-alert class="fixed-top" #selfClosingAlert *ngIf="successMessage" type="success" (closed)="successMessage = ''"
+        >{{ successMessage }}
+      </ngb-alert>
+      <button class="btn btn-primary" (click)="changeSuccessMessage()">Change message</button>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a ngbNavLink>Ngb-DatePicker</a>
+      <ng-template ngbNavContent>
+        <div>
+    <form [formGroup]="formData" (ngSubmit)="onClickSubmit(formData.value)" action
+      class="form-content">
+      <div class="form-control">
+        <label for="username">UserName: </label>
+        <input type="text" formControlName="userName">
+      </div>
+      <div class="form-control">
+        <label for="password">Password: </label>
+        <input type="password" formControlName="password">
+      </div>
+      <div class="form-control">
+        <button *ngIf="!isLoggedIn" class="btn btn-primary" type="submit">Log
+          In</button>
+        <button *ngIf="isLoggedIn" class="btn btn-danger"
+          (click)="onClickLogOut()">Log Out</button>
+      </div>
+    </form>
+  <div class="form-content">
+    <input type="text" [(ngModel)]="model"
+      [ngModelOptions]="{standalone: true}" ngbDatepicker #dp="ngbDatepicker" (navigate)="date = $event.next"/>
+    <button (click)="dp.toggle()">Toggle</button>
+  </div>
+  <div class="form-content">
+    <hr />
+    <button class="btn btn-sm btn-outline-primary me-2"
+      (click)="selectToday()">Select Today</button>
+    <button class="btn btn-sm btn-outline-primary me-2"
+      (click)="dp.navigateTo()">To current month</button>
+    <button class="btn btn-sm btn-outline-primary me-2"
+      (click)="dp.navigateTo({year: 2013, month: 2})">To Feb 2013</button>
+  </div>
+  <h1 *ngIf="isLoggedIn">Logged In</h1>
+  <h1 *ngIf="!isLoggedIn">Logged Out</h1>
+  <!-- <pre>Month:{{ date.month }}.{{ date.year }}</pre> -->
+  <pre>Model: {{ model | json }}</pre>
+</div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="4">
+      <a ngbNavLink>Confirm Modal</a>
+      <ng-template ngbNavContent>
+        <p>
+          First focusable element within the modal window will receive focus upon opening. This could be configured to focus any
+          other element by adding an <code>ngbAutofocus</code> attribute on it.
+        </p>
+        
+        <!-- <pre
+          class="language-html"
+        >
+        <code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">ngbAutofocus</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>btn btn-danger<span class="token punctuation">"</span></span>
+              <span class="token attr-name">(click)</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>modal.close(<span class="token punctuation">'</span>Ok click<span class="token punctuation">'</span>)<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Ok<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span></code></pre>
+        
+        <br /> -->
+        <button class="btn btn-outline-primary me-2" (click)="openModal('focusFirst')">
+          <div>Open confirm modal</div>
+          <div class="text-dark" aria-hidden="true"><small>&times; button will be focused</small></div>
+        </button>
+        
+        <button class="btn btn-outline-primary" (click)="openModal('autofocus')">
+          <div>Open confirm modal with `ngbAutofocus`</div>
+          <div class="text-dark" aria-hidden="true"><small>Ok button will be focused</small></div>
+        </button>
+        <pre>{{ closeResult }}</pre>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="5">
+      <a ngbNavLink>OffCanvas</a>
+      <ng-template ngbNavContent>
+        <ng-template #content let-offcanvas >
+          <div class="offcanvas-header">
+            <h4 class="offcanvas-title">Offcanvas title</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+          </div>
+          <div class="offcanvas-body">
+            <p>One fine body&hellip;</p>
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('Close click')">Close</button>
+            </div>
+          </div>
+        </ng-template>
+        <button class="btn btn-lg btn-outline-primary" (click)="openOffCanvas(content)">Launch offcanvas</button>
+        <pre>{{ closeResult }}</pre>
+      </ng-template>
+      
+    </li>
+    <li [ngbNavItem]="6">
+      <a ngbNavLink>PopOver</a>
+      <ng-template ngbNavContent>
+        <ng-template #popContent>Hello, <b>Humans!</b>!</ng-template>
+        <ng-template #popTitle>Fancy <b>content!!</b></ng-template>
+        <button type="button" class="btn btn-outline-secondary" [ngbPopover]="popContent" [popoverTitle]="popTitle">
+          I've got markup and bindings in my popover!
+        </button>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="7">
+      <a ngbNavLink>Progress Bar</a>
+      <ng-template ngbNavContent="">
+        <p><ngb-progressbar type="success" [value]="25">default</ngb-progressbar></p>
+        <p><ngb-progressbar type="info" [value]="50" height="10px">10px</ngb-progressbar></p>
+        <p><ngb-progressbar type="warning" [value]="75" height=".5rem">.5rem</ngb-progressbar></p>
+        <p><ngb-progressbar type="danger" [value]="100" height="20px">20px</ngb-progressbar></p>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="8">
+      <a ngbNavLink>Rating</a>
+      <ng-template ngbNavContent>
+        <p>We use <code>bootstrap-icons</code> to display stars</p>
+        <ngb-rating [(rate)]="selected" (hover)="hovered=$event" (leave)="hovered=0"></ngb-rating>
+        <hr />
+        <pre>
+          Selected: <b>{{selected}}</b>
+          Hovered: <b>{{hovered}}</b>
+          </pre>
+        <!-- <pre>Rate: <b>{{currentRate}}</b></pre> -->
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="9">
+      <a ngbNavLink>Table</a>
+      <ng-template ngbNavContent>
+        <form>
+          <div class="mb-3 row">
+            <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+            <div class="col-xs-3 col-sm-auto">
+              <input
+                id="table-complete-search"
+                type="text"
+                class="form-control"
+                name="searchTerm"
+                [(ngModel)]="service.searchTerm"
+              />
+            </div>
+            <span class="col col-form-label" *ngIf="service.loading$ | async">Loading...</span>
+          </div>
+        
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col" sortable="name" (sort)="onSort($event)">Country</th>
+                <th scope="col" sortable="area" (sort)="onSort($event)">Area</th>
+                <th scope="col" sortable="population" (sort)="onSort($event)">Population</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let country of countries$ | async ; let i = index">
+                <th scope="row">{{i+1}}</th>
+                <td>
+                  <img
+                    [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+                    class="me-2"
+                    style="width: 20px"
+                  />
+                  <ngb-highlight [result]="country.name" [term]="service.searchTerm"></ngb-highlight>
+                </td>
+                <td><ngb-highlight [result]="country.area | number" [term]="service.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.population | number" [term]="service.searchTerm"></ngb-highlight></td>
+              </tr>
+            </tbody>
+          </table>
+        
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+        
+            <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+              <option [ngValue]="2">2 items per page</option>
+              <option [ngValue]="4">4 items per page</option>
+              <option [ngValue]="6">6 items per page</option>
+            </select>
+          </div>
+        </form>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  <!-- <div class="tree-header">
+    <h1>Tree Hierarchy</h1>
+    <mat-icon>home</mat-icon>
+  </div> -->
+<!-- <p>
+	<button class="btn btn-primary" (click)="changeSuccessMessage()">Change message</button>
+</p> -->
+<!-- <ngb-pagination [collectionSize]="50" [(page)]="currentPage" size="sm"></ngb-pagination> -->
+
+</div>
+
