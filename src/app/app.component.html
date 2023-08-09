@@ -1,7 +1,10 @@
 <div class="tree-component">
-  <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeNav">
+  <nav class="nav">
+    <h1>Angular Bootstrap</h1>
+  </nav>
+  <ul ngbNav #nav="ngbNav" class="nav-tabs text-dark rounded" [(activeId)]="activeNav">
     <li [ngbNavItem]="1">
-      <a ngbNavLink placement="bottom" ngbTooltip="Tree Hierarchy">Home</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Tree Hierarchy" tooltipClass="my-custom-class">Home</a>
       <ng-template ngbNavContent>
         <ngb-accordion #acc="ngbAccordion">
           <ngb-panel title="Tree Hierarchy">
@@ -263,36 +266,84 @@
     <li [ngbNavItem]="12">
       <a ngbNavLink placement="bottom" ngbTooltip="TypeAhead">TypeAhead</a>
       <ng-template ngbNavContent>
-        <label for="typeahead-focus">Search for a state:</label>
-        <input
-          id="typeahead-focus"
-          type="text"
-          class="form-control"
-          [(ngModel)]="stateModel"
-          [ngbTypeahead]="search"
-          (focus)="focus$.next($any($event).target.value)"
-          (click)="click$.next($any($event).target.value)"
-          #instance="ngbTypeahead"
-        />
+        <label for="typeahead-basic">Search for a state:</label>
+        <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="stateModel" [ngbTypeahead]="search" />
         <hr />
         <pre>Model: {{ stateModel | json }}</pre>
       </ng-template>
     </li>
     <li [ngbNavItem]="13">
-      <a ngbNavLink placement="bottom" ngbTooltip="Tooltips">ToolTip</a>
+      <a ngbNavLink placement="bottom" ngbTooltip="Tooltips">ScrollSpy</a>
       <ng-template ngbNavContent>
-        <button type="button" class="btn btn-outline-secondary me-2" placement="top" ngbTooltip="Tooltip on top">
-          Tooltip on top
-        </button>
-        <button type="button" class="btn btn-outline-secondary me-2" placement="end" ngbTooltip="Tooltip on right">
-          Tooltip on right
-        </button>
-        <button type="button" class="btn btn-outline-secondary me-2" placement="bottom" ngbTooltip="Tooltip on bottom">
-          Tooltip on bottom
-        </button>
-        <button type="button" class="btn btn-outline-secondary me-2" placement="start" ngbTooltip="Tooltip on left">
-          Tooltip on left
-        </button>
+        <div  style="height: 80vh; overflow-y: scroll;">
+          <nav class="navbar navbar-fixed-top">
+              <div class="container-fluid">
+                  <div class="navbar-header">
+                      <button type="button" class="navbar-toggle"
+                          data-toggle="collapse" data-target="#myNavbar">
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </button>
+                      <a class="navbar-brand" href="#">GeeksforGeeks</a>
+                  </div>
+                  <div>
+                      <div class="collapse navbar-collapse bg-primary" id="myNavbar">
+                          <ul class="nav navbar-nav">
+                              <li><a href="#section1">Section 1</a></li>
+                              <li><a href="#section2">Section 2</a></li>
+                              <li><a href="#section3">Section 3</a></li>
+                              <li><a href="#section4">Section 4</a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </nav>
+          <div id="section1" class="container-fluid">
+              <h1>Section 1</h1>
+              <h3>GeeksforGeeks</h3>
+              <h5>A computer science portal for geeks.</h5>
+              <h6> This portal has been created to provide
+                  well written, well thought and well
+                  explained solutions for selected questions
+                  related to programming, algorithms,
+                  other computer science subjects.</h6>
+               
+      <p>Scroll this section.</p>
+       
+          </div>
+          <div id="section2" class="container-fluid">
+              <h1>Section 2</h1>
+              <h3>GeeksforGeeks</h3>
+              <h5>A computer science portal for geeks.</h5>
+              <h6> This portal also provide GATE
+                  previous year papers,short notes
+                  for the aspirants.</h6>
+               
+      <p>Scroll this section.</p>
+       
+          </div>
+          <div id="section3" class="container-fluid">
+              <h1>Section 3</h1>
+              <h3>GeeksforGeeks</h3>
+              <h5>A computer science portal for geeks.</h5>
+              <h6>This portal also provide interview questions
+                  asked by private and public sectors.</h6>
+               
+      <p>Scroll this section.</p>
+       
+          </div>
+          <div id="section4" class="container-fluid">
+              <h1>Section 4</h1>
+              <h3>GeeksforGeeks</h3>
+              <h5>A computer science portal for geeks.</h5>
+              <h6>It also provide Internship or
+                  contributor program for students.</h6>
+               
+      <p>Scroll this section.</p>
+       
+          </div>
+      </div>
       </ng-template>
     </li>
   </ul>

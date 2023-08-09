@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbModule, NgbNav, NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNav, NgbOffcanvas, NgbOffcanvasConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,6 +20,8 @@ import { CountryService } from './country.service';
 import { NgbdSortableHeader } from './sortable.directive';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsContainer } from './toast-container.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { JsonPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -44,9 +46,12 @@ import { ToastsContainer } from './toast-container.component';
     NgbDatepickerModule,
     NgbPaginationModule,
     NgbAccordionModule,
-    NgbToastModule
+    NgbToastModule,
+    NgbTooltipModule,
+    JsonPipe,
+    
   ],
-  providers: [NgbOffcanvasConfig, NgbOffcanvas, DecimalPipe, CountryService, NgbNav],
+  providers: [NgbOffcanvasConfig, NgbOffcanvas, DecimalPipe, CountryService, NgbNav, NgbTooltipConfig],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

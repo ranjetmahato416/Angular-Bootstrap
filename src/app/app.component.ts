@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
-import { ModalDismissReasons, NgbActiveModal, NgbAlert, NgbCalendar, NgbDateStruct, NgbModal, NgbOffcanvas, NgbOffcanvasConfig, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbActiveModal, NgbAlert, NgbCalendar, NgbDateStruct, NgbModal, NgbOffcanvas, NgbOffcanvasConfig, NgbTooltipConfig, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, OperatorFunction, Subject, debounceTime, distinctUntilChanged, filter, map, merge, startWith } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { NgbdSortableHeader, SortEvent } from './sortable.directive';
@@ -311,7 +311,8 @@ export class AppComponent implements OnDestroy {
     private offcanvasService: NgbOffcanvas,
     private pipe : DecimalPipe,
     public service : CountryService,
-    public toastService: ToastService
+    public toastService: ToastService,
+	configToolTip: NgbTooltipConfig
   ) {
     this.dataSource.data = TREE_DATA;
     // customize default values of offcanvas used by this component tree
@@ -319,7 +320,11 @@ export class AppComponent implements OnDestroy {
 		config.backdropClass = 'bg-info';
 		config.keyboard = false;
     this.countries$ = service.countries$;
-		this.total$ = service.total$;
+	this.total$ = service.total$;
+
+	// customize default values of tooltips used by this component tree
+	configToolTip.placement = 'end';
+	configToolTip.triggers = 'click';
 
   }
 
@@ -434,15 +439,12 @@ export class AppComponent implements OnDestroy {
 		this.toastService.clear();
 	}
 
-  search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
-		const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
-		const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
-		const inputFocus$ = this.focus$;
-
-		return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-			map((term) =>
-				(term === '' ? states : states.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10),
-			),
-		);
-	};
+	search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+	text$.pipe(
+		debounceTime(200),
+		distinctUntilChanged(),
+		map((term) =>
+			term.length < 2 ? [] : states.filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10),
+		),
+	);
 }
